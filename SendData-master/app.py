@@ -45,18 +45,18 @@ def recoger_datos_y_enviar():
     db2.close() 
     return render_template('index.html')
 
-    return render_template('index.html')
+    
 @app.route('/bascula',methods=['POST'])
 def Recibir_Datos_Bascula():
     peso = request.form["peso"]
     db2 =  mysql.connect()
     mycursor = db2.cursor()
-    querry_tabla = "create table IF NOT EXIST 'pesoUsuario' (PESO INT)"
+    # querry_tabla = "create table IF NOT EXIST 'pesoUsuario' (PESO INT)"
     querry = "INSERT INTO pesoUsuario (%s)"
     error = ""  
     try:
-        mycursor.executemany(querry_tabla)
-        db2.commit()
+        # mycursor.executemany(querry_tabla)
+        # db2.commit()
         mycursor.executemany(querry,peso)
         db2.commit()
     except:
