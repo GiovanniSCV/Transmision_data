@@ -41,22 +41,21 @@ def recoger_datos_y_enviar():
         db2.commit()
     except:
         print("Eror: "+ error)
-    
     print("Number record inserted, ID:", mycursor.lastrowid)
     db2.close() 
-
     return render_template('index.html')
-@app.route('/bascula',methods = ['POST'])
-def pruebabascula():
+
+@app.route('/bascula',methods = ['POST','GET'])
+def bascula():
     response =  request.get_json()
+    print(response)
     return render_template('bascula.html')
 
 # @app.route('/pruebabascula',methods = ['POST'])
 # def pruebabascula():
-#     if request.method ==  "POST":
 
 #     return render_template('pruebabascula.html')
 
-
+#if request.method ==  "POST":
 if __name__ == "__main__":
     app.run(debug=1)
