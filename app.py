@@ -47,6 +47,8 @@ def recoger_datos_y_enviar():
 
 @app.route('/bascula',methods = ['POST','GET'])
 def bascula():
+    peso = request.form['peso']
+    print(peso)
     response =  request.get_json()
     print(response)
     return render_template('bascula.html')
