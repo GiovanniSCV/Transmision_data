@@ -31,9 +31,28 @@ def recoger_datos_y_enviar():
     for item in lista:
         print(item)
     
+    # db2 =  mysql.connect()
+    # mycursor = db2.cursor()
+
+    # querry = "INSERT INTO sensorFreeStyle (date,dateString,rssi,device,direction,rawbg,sgv,type,utcOffset,sysTime) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+    # error = ""
+    # try:
+    #     mycursor.executemany(querry,lista)
+    #     db2.commit()
+    # except:
+    #     print("Eror: "+ error)
+    # print("Number record inserted, ID:", mycursor.lastrowid)
+    # db2.close() 
+    return render_template('index.html')
+
+@app.route('/bascula',methods = ['POST','GET'])
+def bascula():
+    peso = request.form['peso']
+    print(peso)
+    response =  request.get_json()
+    print(response)
     db2 =  mysql.connect()
     mycursor = db2.cursor()
-
     querry = "INSERT INTO sensorFreeStyle (date,dateString,rssi,device,direction,rawbg,sgv,type,utcOffset,sysTime) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
     error = ""
     try:
@@ -43,14 +62,6 @@ def recoger_datos_y_enviar():
         print("Eror: "+ error)
     print("Number record inserted, ID:", mycursor.lastrowid)
     db2.close() 
-    return render_template('index.html')
-
-@app.route('/bascula',methods = ['POST','GET'])
-def bascula():
-    peso = request.form['peso']
-    print(peso)
-    response =  request.get_json()
-    print(response)
     return render_template('bascula.html')
 
 # @app.route('/pruebabascula',methods = ['POST'])
