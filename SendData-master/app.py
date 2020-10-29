@@ -66,7 +66,10 @@ def Recibir_Datos_Bascula():
     db2.close() 
     return render_template('bascula.html')
 
-    
+@app.route('/pruebaBascula')
+def pruebaBascula():
+    return render_template('pruebaBacula.html')
+
 
     
 
