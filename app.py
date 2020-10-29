@@ -53,10 +53,10 @@ def bascula():
     print(response)
     db2 =  mysql.connect()
     mycursor = db2.cursor()
-    querry = "INSERT INTO sensorFreeStyle (date,dateString,rssi,device,direction,rawbg,sgv,type,utcOffset,sysTime) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+    querry = "INSERT INTO pesoUsuario (peso) VALUES (%s)"
     error = ""
     try:
-        mycursor.executemany(querry,lista)
+        mycursor.executemany(querry,peso)
         db2.commit()
     except:
         print("Eror: "+ error)
