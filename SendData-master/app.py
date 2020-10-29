@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 from flask_pymongo import PyMongo
 from flaskext.mysql import MySQL
 
@@ -53,6 +53,7 @@ def Recibir_Datos_Bascula():
     mycursor = db2.cursor()
     querry_tabla = "create table IF NOT EXIST 'pesoUsuario' (PESO INT)"
     querry = "INSERT INTO pesoUsuario (%s)"
+    error = ""  
     try:
         mycursor.executemany(querry_tabla)
         db2.commit()
