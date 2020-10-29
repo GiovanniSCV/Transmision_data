@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 from flask_pymongo import PyMongo
 from flaskext.mysql import MySQL
 
@@ -35,6 +35,7 @@ def recoger_datos_y_enviar():
     mycursor = db2.cursor()
 
     querry = "INSERT INTO sensorFreeStyle (date,dateString,rssi,device,direction,rawbg,sgv,type,utcOffset,sysTime) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+    error = ""
     try:
         mycursor.executemany(querry,lista)
         db2.commit()
@@ -44,8 +45,17 @@ def recoger_datos_y_enviar():
     print("Number record inserted, ID:", mycursor.lastrowid)
     db2.close() 
 
-
     return render_template('index.html')
+@app.route('/bascula',methods = ['POST'])
+def pruebabascula():
+    response =  request.get_json()
+    return render_template('bascula.html')
+
+# @app.route('/pruebabascula',methods = ['POST'])
+# def pruebabascula():
+#     if request.method ==  "POST":
+
+#     return render_template('pruebabascula.html')
 
 
 if __name__ == "__main__":
