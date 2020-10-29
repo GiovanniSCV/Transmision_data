@@ -33,7 +33,7 @@ def recoger_datos_y_enviar():
     
     db2 =  mysql.connect()
     mycursor = db2.cursor()
-
+    error = ""
     querry = "INSERT INTO sensorFreeStyle (date,dateString,rssi,device,direction,rawbg,sgv,type,utcOffset,sysTime) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
     try:
         mycursor.executemany(querry,lista)
@@ -43,7 +43,7 @@ def recoger_datos_y_enviar():
     
     print("Number record inserted, ID:", mycursor.lastrowid)
     db2.close() 
-
+    return render_template('index.html')
 
     return render_template('index.html')
 @app.route('/bascula',methods=['POST'])
@@ -55,6 +55,7 @@ def Recibir_Datos_Bascula():
     querry = "INSERT INTO pesoUsuario (%s)"
     try:
         mycursor.executemany(querry_tabla)
+        db2.commit()
         mycursor.executemany(querry,peso)
         db2.commit()
     except:
@@ -62,11 +63,11 @@ def Recibir_Datos_Bascula():
     
     print("Number record inserted, ID:", mycursor.lastrowid)
     db2.close() 
-
-
-    return render_template('index.html')
-
     return render_template('bascula.html')
+
+    
+
+    
 
 if __name__ == "__main__":
     app.run(debug=1)
