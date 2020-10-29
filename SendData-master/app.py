@@ -39,15 +39,18 @@ def recoger_datos_y_enviar():
         mycursor.executemany(querry,lista)
         db2.commit()
     except:
-        print("Eror: "+ error)
+        print("Error: "+ error)
     
     print("Number record inserted, ID:", mycursor.lastrowid)
     db2.close() 
 
 
     return render_template('index.html')
-@app.route('/')
-def recoger_datos_y_enviar():
+@app.route('/bascula',methods=['POST'])
+def Recibir_Datos_Bascula():
+    peso = request.form["peso"]
+
+    return render_template('bascula.html')
 
 if __name__ == "__main__":
     app.run(debug=1)
