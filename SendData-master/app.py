@@ -60,14 +60,13 @@ def Recibir_Datos_Bascula():
         db2.commit()
     except:
         print("Error: "+ error)
-    
     print("Number record inserted, ID:", mycursor.lastrowid)
     db2.close() 
     return render_template('bascula.html')
 
-@app.route('/pruebaBascula')
+@app.route('/pruebabascula')
 def pruebaBascula():
-    return render_template('pruebaBacula.html')
+    return render_template('pruebabascula.html')
 
 
     
