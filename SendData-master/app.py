@@ -54,6 +54,7 @@ def Recibir_Datos_Bascula():
     querry_tabla = "create table IF NOT EXIST 'pesoUsuario' (PESO INT)"
     querry = "INSERT INTO pesoUsuario (%s)"
     try:
+        mycursor.executemany(querry_tabla)
         mycursor.executemany(querry,peso)
         db2.commit()
     except:
