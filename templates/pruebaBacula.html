@@ -9,9 +9,9 @@
     <script src='main.js'></script>
 </head>
 <body>
-    <form action = "{{ url_for('Recibir_Datos_Bascula')}}" method="post">
+    <form method="post" action = "{{ url_for('Recibir_Datos_Bascula')}}" >
         <input type="number" name = "peso" placeholder="Ingrese su peso">
-        <button >Enviar</button>
+        <button type="submit" >Enviar</button>
     </form>
 </body>
 </html>
