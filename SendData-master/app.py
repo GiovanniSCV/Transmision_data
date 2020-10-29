@@ -69,7 +69,7 @@ def pruebaBascula():
     return render_template('pruebabascula.html')
 
 
-    
+# algun comentario
 
 if __name__ == "__main__":
     app.run(debug=1)
