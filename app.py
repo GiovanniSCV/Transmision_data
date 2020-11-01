@@ -57,27 +57,31 @@ def recoger_datos_y_enviar():
 
 @app.route('/bascula',methods = ['POST','GET'])
 def bascula():
+    # iduser = request.form['iduser']
     peso = request.form['peso']
+    # print(peso + " y id: " + iduser)
     print(peso)
     db2 =  mysql.connect()
     mycursor = db2.cursor()
+    # querry = "INSERT INTO pesoUsuario (iduser, peso) VALUES (%s,%s)"
     querry = "INSERT INTO pesoUsuario (peso) VALUES (%s)"
     error = ""
     try:
-        print(querry)
-        mycursor.executemany(querry,peso)
+        print(querry % peso)
+        # print(querry % iduser,peso)
+        mycursor.execute(querry,peso)
+        # arrayQuerry = [ iduser, peso ]
+        # mycursor.execute(querry,arrayQuerry)
         db2.commit()
+        print("Number record inserted, ID:", mycursor.lastrowid)
     except:
         print("Eror: "+ error)
-    print("Number record inserted, ID:", mycursor.lastrowid)
     db2.close() 
     return render_template('bascula.html')
 
 # @app.route('/pruebabascula',methods = ['POST'])
 # def pruebabascula():
-
 #     return render_template('pruebabascula.html')
-
 #if request.method ==  "POST":
 if __name__ == "__main__":
     app.run(debug=1)
