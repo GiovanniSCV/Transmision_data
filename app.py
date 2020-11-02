@@ -16,7 +16,7 @@ app.config['MYSQL_DATABASE_HOST'] = 'us-cdbr-east-02.cleardb.com'
 
 mysql.init_app(app)
 
-def transpaso_datos():
+def traspaso_datos():
     varwhile = True
     # varwhile = 1
     while varwhile != False :
@@ -45,40 +45,41 @@ def transpaso_datos():
         print("algo salio malll")
 
 #Usar hilos con threading
-mythreading = threading.Thread(target = transpaso_datos )
+mythreading = threading.Thread(target = traspaso_datos )
 mythreading.setDaemon(True)
 mythreading.start()
 
 @app.route('/')
 def recoger_datos_y_enviar():
-    # for item in lista:
-    #     print(item)
+
     return render_template('index.html')
 
+# @app.route('/bascula')
 @app.route('/bascula',methods = ['POST','GET'])
 def bascula():
-    # iduser = request.form['iduser']
-    peso = request.form['peso']
-    # print(peso + " y id: " + iduser)
-    print(peso)
-    db2 =  mysql.connect()
-    mycursor = db2.cursor()
-    # querry = "INSERT INTO pesoUsuario (iduser, peso) VALUES (%s,%s)"
-    querry = "INSERT INTO pesoUsuario (peso) VALUES (%s)"
-    error = ""
-    try:
-        print(querry % peso)
-        # print(querry % iduser,peso)
-        mycursor.execute(querry,peso)
-        # arrayQuerry = [ iduser, peso ]
-        # mycursor.execute(querry,arrayQuerry)
-        db2.commit()
-        print("Number record inserted, ID:", mycursor.lastrowid)
-    except:
-        print("Eror: "+ error)
-    db2.close() 
+    if request.method ==  "POST":
+        # # iduser = request.form['iduser']
+        # peso = request.form['peso']
+        # # print(peso + " y id: " + iduser)
+        # print(peso)
+        # db2 =  mysql.connect()
+        # mycursor = db2.cursor()
+        # # querry = "INSERT INTO pesoUsuario (iduser, peso) VALUES (%s,%s)"
+        # querry = "INSERT INTO pesoUsuario (peso) VALUES (%s)"
+        # error = ""
+        # try:
+        #     print(querry % peso)
+        #     # print(querry % iduser,peso)
+        #     mycursor.execute(querry,peso)
+        #     # arrayQuerry = [ iduser, peso ]
+        #     # mycursor.execute(querry,arrayQuerry)
+        #     db2.commit()
+        #     print("Number record inserted, ID:", mycursor.lastrowid)
+        # except:
+        #     print("Eror: "+ error)
+        # db2.close() 
+        return render_template('index.html')
     return render_template('bascula.html')
-
 # @app.route('/pruebabascula',methods = ['POST'])
 # def pruebabascula():
 #     return render_template('pruebabascula.html')
