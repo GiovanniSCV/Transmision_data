@@ -9,9 +9,9 @@ app.config['MONGO_URI'] = 'mongodb+srv://Prueba:prueba@cluster0.xv7cj.mongodb.ne
 mongo = PyMongo(app)
 mysql = MySQL()
 
-app.config['MYSQL_DATABASE_USER'] = 'bec43b382c6e22'
-app.config['MYSQL_DATABASE_PASSWORD'] ='9e83483e'
-app.config['MYSQL_DATABASE_DB'] = 'heroku_9b4bacbd64cc96f'
+app.config['MYSQL_DATABASE_USER'] = 'bdb20eaa9eef3c'
+app.config['MYSQL_DATABASE_PASSWORD'] ='d0387f2a'
+app.config['MYSQL_DATABASE_DB'] = 'heroku_42078ca09a517b2'
 app.config['MYSQL_DATABASE_HOST'] = 'us-cdbr-east-02.cleardb.com'
 
 mysql.init_app(app)
