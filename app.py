@@ -60,7 +60,7 @@ def bascula():
     if request.method ==  "POST":
         # iduser = request.form['idUser']
         varpeso = (request.form['peso'])
-        peso = int(varpeso)
+        peso = float(varpeso)
         print(type(peso))
         db2 =  mysql.connect()
         mycursor = db2.cursor()
