@@ -58,7 +58,7 @@ def recoger_datos_y_enviar():
 @app.route('/bascula',methods = ['POST','GET'])
 def bascula():
     if request.method ==  "POST":
-        iduser = int(request.form['idUser'])
+        iduser = request.form['idUser']
         peso = request.form['peso']
         print(peso + " y id: " + iduser)
         db2 =  mysql.connect()
