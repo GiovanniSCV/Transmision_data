@@ -2,7 +2,7 @@ from flask import Flask, render_template, request
 from flask_pymongo import PyMongo
 from flaskext.mysql import MySQL
 import time
-import threading
+import threading , sys
 
 app = Flask(__name__)
 app.config['MONGO_URI'] = 'mongodb+srv://Prueba:prueba@cluster0.xv7cj.mongodb.net/Prueba?retryWrites=true&w=majority'
@@ -50,7 +50,7 @@ mythreading.setDaemon(True)
 mythreading.start()
 
 @app.route('/')
-def recoger_datos_y_enviar():
+def home():
 
     return render_template('index.html')
 
@@ -58,29 +58,28 @@ def recoger_datos_y_enviar():
 @app.route('/bascula',methods = ['POST','GET'])
 def bascula():
     if request.method ==  "POST":
-        iduser = request.form['idUser']
-        peso = request.form['peso']
-        print(peso + " y id: " + iduser)
+        # iduser = request.form['idUser']
+        varpeso = (request.form['peso'])
+        peso = int(varpeso)
+        print(type(peso))
         db2 =  mysql.connect()
         mycursor = db2.cursor()
-        querry = "INSERT INTO pesoUsuario (iduser, peso) VALUES (%s,%s)"
-        # querry = "INSERT INTO pesoUsuario (peso) VALUES (%s)"
-        error = ""
+        querry = "INSERT INTO pesoUsuarios (peso) VALUES (%s)"
+        # arrayQuerry = ( iduser, peso )
+        # print(querry % (iduser,peso))
+        print("entro querry:" +querry%peso)
         try:
-            # print(querry % iduser,peso)
-            # mycursor.execute(querry,peso)
-            arrayQuerry = ( iduser, peso )
-            print(querry % peso)
-            mycursor.execute(querry,arrayQuerry)
+            mycursor.execute(querry,(peso))
+            # print("Rowcont:  "+ mycursor.rowcount)
             db2.commit()
-        except:
-            print("Eror: "+ error)
+        except Exception as e :
+            print("Eror: "+ e )
         db2.close() 
         return render_template('index.html')
     return render_template('bascula.html')
-# @app.route('/pruebabascula',methods = ['POST'])
-# def pruebabascula():
-#     return render_template('pruebabascula.html')
+# querry = "INSERT INTO pesoUsuarios (iduser, peso) VALUES (%s,%s)"
+            # arrayQuerry = tuple( iduser, peso )
+            # mycursor.execute(querry,arrayQuerry)
 #if request.method ==  "POST":
 if __name__ == "__main__":
     app.run(debug=1)
