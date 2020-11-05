@@ -59,7 +59,7 @@ def home():
         listaAux = valFreestyle.values()
         listas = tuple(listaAux)
         lista.append(listas)
-    print("Datos leidos de MongoDB: " + len(lista))
+    print("Datos leidos de MongoDB: " + str(len(lista)))
     db2 =  mysql.connect()
     mycursor = db2.cursor()
     querry = "INSERT INTO sensorFreeStyle (date,dateString,rssi,device,direction,rawbg,sgv,type,utcOffset,sysTime) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
