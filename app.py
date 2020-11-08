@@ -102,6 +102,16 @@ def bascula():
 # querry = "INSERT INTO pesoUsuarios (iduser, peso) VALUES (%s,%s)"
             # arrayQuerry = tuple( iduser, peso )
             # mycursor.execute(querry,arrayQuerry)
-#if request.method ==  "POST":
+@app.route('/fitbit',methods = ['POST'])
+def fitbit():
+    if request.method == "POST":
+        horafit = request.form['hora']
+        id = request.form['id']
+        stepsRate = request.form['stepsRate']
+        caloriesRate = request.form['caloriesRate']
+        heartRate = request.form['']
+        print( "recived Data:  " + horafit +" "+ id +" "+stepsRate+" "+caloriesRate+" "+heartRate  )
+    return "hi"
+
 if __name__ == "__main__":
     app.run(debug=1)
