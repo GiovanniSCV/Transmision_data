@@ -40,6 +40,22 @@ def traspaso_datos():
         #     print("Eror: "+ error)
         # db2.close()
         time.sleep(300)     # similar a delay(segundos)
+        
+        db2 =  mysql.connect()
+        mycursor = db2.cursor()
+        querry = "select count(*) from sensorFreeStyle"
+        error = ""
+        try:
+            mycursor.execute(querry)
+            countData = mycursor.fetchall()
+            print(countData)
+            print("count row :", mycursor.rowcount)
+            db2.commit()
+        except:
+            print("Eror: "+ error)
+        db2.close()
+        print(" ")
+        
         print("Actualizacion de datos")
     else:
         print("algo salio malll")
@@ -62,16 +78,16 @@ def home():
     print("Datos leidos de MongoDB: " + str(len(lista)))
     db2 =  mysql.connect()
     mycursor = db2.cursor()
-    querry = "INSERT INTO sensorFreeStyle (date,dateString,rssi,device,direction,rawbg,sgv,type,utcOffset,sysTime) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
-    error = ""
-    try:
-        mycursor.executemany(querry,lista)
-        db2.commit()
-        print("Number record inserted, ID:", mycursor.lastrowid)
-    except:
-        print("Eror: "+ error)
-    db2.close()
-    # time.sleep(300)     # similar a delay(segundos)
+    # querry = "INSERT INTO sensorFreeStyle (date,dateString,rssi,device,direction,rawbg,sgv,type,utcOffset,sysTime) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+    # error = ""
+    # try:
+    #     mycursor.executemany(querry,lista)
+    #     db2.commit()
+    #     print("Number record inserted, ID:", mycursor.lastrowid)
+    # except:
+    #     print("Eror: "+ error)
+    # db2.close()
+    # # time.sleep(300)     # similar a delay(segundos)
     print("Actualizacion de datos")
 
     return render_template('index.html')
