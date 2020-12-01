@@ -79,8 +79,6 @@ def traspaso_datos():
         print("algo salio malll")
     #---------------------------------------------
         # Esto es para eliminar de mongodb
-
-        
     
 #Usar hilos con threading
 mythreading = threading.Thread(target = traspaso_datos )
@@ -89,38 +87,16 @@ mythreading.start()
 
 @app.route('/')
 def home():
-    user_collection = mongo.db.entries
-    lista = []
-    for valFreestyle in user_collection.find():
-        valFreestyle.pop('_id')
-        valFreestyle['date'] = int(valFreestyle['date'])
-        listaAux = valFreestyle.values()
-        listas = tuple(listaAux)
-        lista.append(listas)
-    print("Datos leidos de MongoDB: " + str(len(lista)))
-    db2 =  mysql.connect()
-    mycursor = db2.cursor()
-    # querry = "INSERT INTO sensorFreeStyle (date,dateString,rssi,device,direction,rawbg,sgv,type,utcOffset,sysTime) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
-    # error = ""
-    # try:
-    #     mycursor.executemany(querry,lista)
-    #     db2.commit()
-    #     print("Number record inserted, ID:", mycursor.lastrowid)
-    # except:
-    #     print("Eror: "+ error)
-    # db2.close()
-    # # time.sleep(300)     # similar a delay(segundos)
-    # print("Actualizacion de datos")
     return render_template('index.html')
 
 # @app.route('/bascula')
 @app.route('/bascula',methods = ['POST','GET'])
 def bascula():
     if request.method ==  "POST":
-        # iduser = request.form['idUser']
+        iduser = request.form['idUser']
         varpeso = (request.form['peso'])
         peso = float(varpeso)
-        print(type(peso))
+        print(type(iduser))
         db2 =  mysql.connect()
         mycursor = db2.cursor()
         querry = "INSERT INTO pesoUsuarios (peso) VALUES (%s)"
