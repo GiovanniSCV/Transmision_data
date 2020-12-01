@@ -94,6 +94,7 @@ def home():
 def bascula():
     if request.method ==  "POST":
         iduser = request.form['idUser']
+        print(iduser)
         varpeso = (request.form['peso'])
         peso = float(varpeso)
         db2 =  mysql.connect()
