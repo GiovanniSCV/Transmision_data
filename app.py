@@ -57,7 +57,7 @@ def traspaso_datos():
             db2 =  mysql.connect()
             mycursor = db2.cursor()
             querry = "INSERT INTO sensorFreeStyle (date,dateString,rssi,device,direction,rawbg,sgv,type,utcOffset,sysTime) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
-            error = ""
+            # error = ""
             try:
                 mycursor.executemany(querry,lista)
                 db2.commit()
@@ -87,7 +87,9 @@ mythreading.start()
 
 @app.route('/')
 def home():
-    return render_template('index.html')
+    countSensor = coutData("sensorFreeStyle")
+    countPeso = coutData("pesousuarios")
+    return render_template("index.html", sensor = countSensor, peso = countPeso)
 
 # @app.route('/bascula')
 @app.route('/bascula',methods = ['POST','GET'])
@@ -126,6 +128,120 @@ def fitbit():
         heartRate = request.form['']
         print( "recived Data:  " + horafit +" "+ id +" "+stepsRate+" "+caloriesRate+" "+heartRate  )
     return "hi"
+#-----------------------------------------------------------------
+@app.route('/peso')
+# @app.route('/index',methods = ['POST','GET'])
+def peso():
+    read = readTables("pesousuarios")
+    return render_template("peso.html", read = read)
+@app.route('/sensor')
+# @app.route('/index',methods = ['POST','GET'])
+def sensor():
+    read = readTables("sensorFreeStyle")
+    return render_template("sensor.html", read = read )
+@app.route('/graficainsulina')
+# @app.route('/index',methods = ['POST','GET'])
+def graficainsulina():
+    read = readLastData("sensorFreeStyle","dateString")
+    # print(read)
+    (date,valGlucosa) = ordenarGrafica(read, 1 , 5 )
+    return render_template("graficainsulina.html",dateGlucosa = date, glucosa = valGlucosa)
+@app.route('/graficapeso')
+# @app.route('/index',methods = ['POST','GET'])
+def graficapeso():
+    read = readLastData("pesousuarios","fecha")
+    (date,valPeso) = ordenarGrafica( read, 2, 1)
+    print(date)
+    return render_template("graficapeso.html",datePeso = date, peso = valPeso)
+@app.route('/graficacircular')
+def graficacircular():
+    read = readTables("sensorFreeStyle")
+    zonasGraficaC = datacircular(read,5, 80, 120)
+    print(type(zonasGraficaC))
+    return render_template("graficacircular.html",zonasGraficaC = zonasGraficaC)
+@app.route('/graficacircularpeso')
+def graficacircularpeso():
+    read = readTables("pesousuarios")
+    zonasGraficaC = datacircular(read,1,60,80)
+    return render_template("graficacircularpeso.html",zonasGraficaC = zonasGraficaC)
 
+#-----------------------------------------------------------------
+def coutData(tabla):
+    db2 =  mysql.connect()
+    mycursor = db2.cursor()
+    querry = "select count(*) from "+ tabla
+    error = ""
+    try:
+        mycursor.execute(querry)
+        countData = mycursor.fetchone()
+        print(countData[0])
+        print("count row :", mycursor.rowcount)
+        db2.commit()
+        db2.close()
+        return countData[0]
+    except:
+        print("Eror: "+ error)
+        db2.close()
+        countData = "vacio"
+        return countData
+    print(" ")
+def readTables(tabla):
+    db2 =  mysql.connect()
+    mycursor = db2.cursor()
+    querry = "select * from " + tabla
+    error = ""
+    try:
+        mycursor.execute(querry)
+        readData = mycursor.fetchall()
+        print(readData)
+        print("count row :", mycursor.rowcount)
+        db2.commit()
+        db2.close()
+        return readData
+    except:
+        print("Eror: "+ error)
+        db2.close()
+        readData = "vacio"
+        return readData
+def datacircular(tuplaMySQL, indice, bajaNormal, normalAlta):
+    zonasDataUser =[0,0,0]
+    for valData in tuplaMySQL:
+        if valData[indice] >= bajaNormal and valData[indice] <= normalAlta :
+            zonasDataUser[1] += 1#   Zona media (Nivel sanoooo)
+        elif valData[indice] > normalAlta:
+            zonasDataUser[2] += 1#   Zona Alta (Hiperglucemico)
+        elif valData[indice] < bajaNormal:
+            zonasDataUser[0] += 1#   Zona Baja (Hipoglucemico)
+        # print("0-"+ str(zonasDataUser[0]) + " 1-"+ str(zonasDataUser[1]) + " 2-"+ str(zonasDataUser[2]))
+    return zonasDataUser
+def readLastData(tabla,campo):
+    db2 =  mysql.connect()
+    mycursor = db2.cursor()
+    lecturaDesc = "order by "+ campo +" desc limit 7"
+    querry = "select * from " + tabla +" "+ lecturaDesc
+    error = ""
+    try:
+        mycursor.execute(querry)
+        readData = mycursor.fetchall()
+        print(readData)
+        print("count row :", mycursor.rowcount)
+        db2.commit()
+        db2.close()
+        return readData
+    except:
+        print("Eror: "+ error)
+        db2.close()
+        readData = "vacio"
+        return readData
+#   Return (Date, Val peso)
+def ordenarGrafica(tuplaMySQL,indDate,indVal):
+    dataVal     = []
+    dataDate    = []
+    print(tuplaMySQL)
+    for dataTable in tuplaMySQL:
+        dataDate.append(str(dataTable[indDate]))
+        dataVal.append(int(dataTable[indVal]))
+    return (dataDate, dataVal)
+    
 if __name__ == "__main__":
     app.run(debug=1)
