@@ -16,74 +16,71 @@ app.config['MYSQL_DATABASE_HOST'] = 'us-cdbr-east-02.cleardb.com'
 mysql.init_app(app)
 
 def traspaso_datos():
-    user_collection = mongo.db.oldata
-    # vacia = user_collection.find_one({"nombre":"giovanni sabogal cespedes"})
+    
     varwhile = True
-    while varwhile == True :
-        lista = []
-        for valFreestyle in user_collection.find():
-            lista.append(valFreestyle)
-        print(len(lista))
-        for valOldDelete in lista:
-            vaciar = user_collection.find_one({"date":valOldDelete.get("date")})
-            user_collection.find_one_and_delete({"date":valOldDelete.get("date")})
-            print("borrando")
-        print("delay")
-        time.sleep(300)
-    # print("None non tipe")
-    # varwhile = True
-    # try:
-    #     while varwhile != False :
-    #         print("entro")
-    #         user_collection = mongo.db.entries
-    #         lista = []
-    #         oldList = []
-    #         cont = 0
-    #         for valFreestyle in user_collection.find():
-    #             #   Adqisicion datos almacenados
-    #             oldList.append(valFreestyle)
-    #             #   Fin
-    #             valFreestyle.pop('_id')
-    #             valFreestyle['date'] = int(valFreestyle['date'])
-    #             listaAux = valFreestyle.values()
-    #             listas = tuple(listaAux)
-    #             lista.append(listas)
-    #             cont+=1
-    #         print(cont)
-    #         #---------------------------------------------------
-    #         doc = mongo.db.oldata.insert_many(oldList)
-    #         #---------------------------------------------------
-    #         # db2 =  mysql.connect()
-    #         # mycursor = db2.cursor()
-    #         # querry = "INSERT INTO sensorFreeStyle (date,dateString,rssi,device,direction,rawbg,sgv,type,utcOffset,sysTime) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
-    #         # error = ""
-    #         # try:
-    #         #     mycursor.executemany(querry,lista)
-    #         #     db2.commit()
-    #         #     print("Number record inserted, ID:", mycursor.lastrowid)
-    #         # except:
-    #         #     print("Eror: "+ error)
-    #         # db2.close()
-            
-    #         time.sleep(300)     # similar a delay(segundos)
-    #         # db2 =  mysql.connect()
-    #         # mycursor = db2.cursor()
-    #         # querry = "select count(*) from sensorFreeStyle"
-    #         # error = ""
-    #         # try:
-    #         #     mycursor.execute(querry)
-    #         #     countData = mycursor.fetchall()
-    #         #     print(countData)
-    #         #     print("count row :", mycursor.rowcount)
-    #         #     db2.commit()
-    #         # except:
-    #         #     print("Eror: "+ error)
-    #         # db2.close()
-    #         # print(" ")
+    try:
+        while varwhile != False :
+            #/////////////////////////////////////////////////////////////////////////
+            #--------------     Lectura MongoDB  -------------------------------------
+            user_collection = mongo.db.entries
+            lista = []
+            oldList = []
+            cont = 0
+            for valFreestyle in user_collection.find():
+                #   Adqisicion datos almacenados
+                oldList.append(valFreestyle)
+                #   Fin
+                valFreestyle.pop('_id')
+                valFreestyle['date'] = int(valFreestyle['date'])
+                listaAux = valFreestyle.values()
+                listas = tuple(listaAux)
+                lista.append(listas)
+                cont+=1
+            print(cont)
+            #-------------- Fin Lectura MongoDB  -------------------------------------
+            #/////////////////////////////////////////////////////////////////////////
+            #-------------- Hacer backup MongoDB -------------------------------------
+            user_collection = mongo.db.oldata
+            cont = 0
+            for oldListItem in oldList:
+                repetido = user_collection.find_one({"date":oldListItem.get("date")})
+                if repetido is None:
+                    # print("Puede Ingresar: ", oldListItem )
+                    doc = mongo.db.oldata.insert_one(oldListItem)
+                # else:
+                #     print("Esta repetido: ", oldListItem)
+                cont+=1
+            print("Conteo backup: ",cont)
+            #-------------- FIN Hacer backup MongoDB ---------------------------------
+            #/////////////////////////////////////////////////////////////////////////
+            #--------------     Insersión MySQL  -------------------------------------
+            db2 =  mysql.connect()
+            mycursor = db2.cursor()
+            querry = "INSERT INTO sensorFreeStyle (date,dateString,rssi,device,direction,rawbg,sgv,type,utcOffset,sysTime) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+            error = ""
+            try:
+                mycursor.executemany(querry,lista)
+                db2.commit()
+                print("Number record inserted, ID:", mycursor.lastrowid)
+            except:
+                print("No Insersión ")
+            db2.close()
+            #--------------  Fin Insersión MySQL  -------------------------------------
+            #//////////////////////////////////////////////////////////////////////////
+            #-----     Eliminar de colecion principal MongoDB.entries  ----------------
+            # user_collection = mongo.db.entries
+            # for valOldDelete in oldList:
+            #     user_collection.find_one_and_delete({"date":valOldDelete.get("date")})
+            #-----   FIN  Eliminar de colecion principal MongoDB.entries  -------------
+            #/////////////////////////////////////////////////////////////////////////
+            print("Actualizacion de datos")
+            time.sleep(300)
+    except:
+        print("algo salio malll")
+    #---------------------------------------------
+        # Esto es para eliminar de mongodb
+
         
-    #         print("Actualizacion de datos")
-    # except:
-    #     print("algo salio malll")
     
 #Usar hilos con threading
 mythreading = threading.Thread(target = traspaso_datos )
