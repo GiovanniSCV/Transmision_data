@@ -100,7 +100,7 @@ def bascula():
         mycursor = db2.cursor()
         query = "INSERT INTO pesoUsuarios (iduser, peso) VALUES (%s,%s)"
         # query = "INSERT INTO pesoUsuarios (peso) VALUES (%s)"
-        arrayQuerry = ( iduser, peso )
+        arrayQuery = ( iduser, peso )
         # print(query % (iduser,peso))
         print("entro querry:" +query%arrayQuery)
         try:
