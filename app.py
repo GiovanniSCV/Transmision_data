@@ -40,17 +40,17 @@ def traspaso_datos():
             #-------------- Fin Lectura MongoDB  -------------------------------------
             #/////////////////////////////////////////////////////////////////////////
             #-------------- Hacer backup MongoDB -------------------------------------
-            user_collection = mongo.db.oldata
-            cont = 0
-            for oldListItem in oldList:
-                repetido = user_collection.find_one({"date":oldListItem.get("date")})
-                if repetido is None:
-                    # print("Puede Ingresar: ", oldListItem )
-                    doc = mongo.db.oldata.insert_one(oldListItem)
-                # else:
-                #     print("Esta repetido: ", oldListItem)
-                cont+=1
-            print("Conteo backup: ",cont)
+            # user_collection = mongo.db.oldata
+            # cont = 0
+            # for oldListItem in oldList:
+            #     repetido = user_collection.find_one({"date":oldListItem.get("date")})
+            #     if repetido is None:
+            #         # print("Puede Ingresar: ", oldListItem )
+            #         doc = mongo.db.oldata.insert_one(oldListItem)
+            #     # else:
+            #     #     print("Esta repetido: ", oldListItem)
+            #     cont+=1
+            # print("Conteo backup: ",cont)
             #-------------- FIN Hacer backup MongoDB ---------------------------------
             #/////////////////////////////////////////////////////////////////////////
             #--------------     Insersión MySQL  -------------------------------------
@@ -96,15 +96,15 @@ def bascula():
         iduser = request.form['idUser']
         varpeso = (request.form['peso'])
         peso = float(varpeso)
-        print(type(iduser))
         db2 =  mysql.connect()
         mycursor = db2.cursor()
-        querry = "INSERT INTO pesoUsuarios (peso) VALUES (%s)"
-        # arrayQuerry = ( iduser, peso )
-        # print(querry % (iduser,peso))
-        print("entro querry:" +querry%peso)
+        query = "INSERT INTO pesoUsuarios (iduser, peso) VALUES (%s,%s)"
+        # query = "INSERT INTO pesoUsuarios (peso) VALUES (%s)"
+        arrayQuerry = ( iduser, peso )
+        # print(query % (iduser,peso))
+        print("entro querry:" +query%arrayQuery)
         try:
-            mycursor.execute(querry,(peso))
+            mycursor.execute(query,arrayQuery)
             # print("Rowcont:  "+ mycursor.rowcount)
             db2.commit()
         except Exception as e :
@@ -112,7 +112,7 @@ def bascula():
         db2.close() 
         return render_template('index.html')
     return render_template('bascula.html')
-# querry = "INSERT INTO pesoUsuarios (iduser, peso) VALUES (%s,%s)"
+# query = "INSERT INTO pesoUsuarios (iduser, peso) VALUES (%s,%s)"
             # arrayQuerry = tuple( iduser, peso )
             # mycursor.execute(querry,arrayQuerry)
 @app.route('/fitbit',methods = ['POST'])
