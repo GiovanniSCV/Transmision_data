@@ -6,7 +6,7 @@ import threading , sys
 
 app = Flask(__name__)
 app.config['MONGO_URI'] = 'mongodb+srv://Prueba:prueba@cluster0.xv7cj.mongodb.net/Prueba?retryWrites=true&w=majority'
-mongo = PyMongo(app)
+mongo = PyMongo(app)  
 mysql = MySQL()
 
 app.config['MYSQL_DATABASE_USER'] = 'bdb20eaa9eef3c'
@@ -16,7 +16,6 @@ app.config['MYSQL_DATABASE_HOST'] = 'us-cdbr-east-02.cleardb.com'
 mysql.init_app(app)
 
 def traspaso_datos():
-    
     varwhile = True
     try:
         while varwhile != False :
@@ -91,7 +90,6 @@ def home():
     countPeso = coutData("pesousuarios")
     return render_template("index.html", sensor = countSensor, peso = countPeso)
 
-# @app.route('/bascula')
 @app.route('/bascula',methods = ['POST','GET'])
 def bascula():
     if request.method ==  "POST":
@@ -118,15 +116,16 @@ def bascula():
 # query = "INSERT INTO pesoUsuarios (iduser, peso) VALUES (%s,%s)"
             # arrayQuerry = tuple( iduser, peso )
             # mycursor.execute(querry,arrayQuerry)
+
 @app.route('/fitbit',methods = ['POST'])
 def fitbit():
     if request.method == "POST":
         horafit = request.form['hora']
-        id = request.form['id']
+        fitbit_id = request.form['id']
         stepsRate = request.form['stepsRate']
         caloriesRate = request.form['caloriesRate']
         heartRate = request.form['']
-        print( "recived Data:  " + horafit +" "+ id +" "+stepsRate+" "+caloriesRate+" "+heartRate  )
+        print( "recived Data:  " + horafit +" "+ fitbit_id +" "+ stepsRate + " " + caloriesRate+" "+heartRate )
     return "hi"
 #-----------------------------------------------------------------
 @app.route('/peso')
