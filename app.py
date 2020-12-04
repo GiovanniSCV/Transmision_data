@@ -124,7 +124,7 @@ def fitbit():
         fitbit_id = request.form['id']
         stepsRate = request.form['stepsRate']
         caloriesRate = request.form['caloriesRate']
-        heartRate = request.form['']
+        # heartRate = request.form['']
         print( "recived Data:  " + horafit +" "+ fitbit_id +" "+ stepsRate + " " + caloriesRate+" "+heartRate )
     return "hi"
 #-----------------------------------------------------------------
