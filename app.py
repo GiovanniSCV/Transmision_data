@@ -142,7 +142,6 @@ def sensor():
 # @app.route('/index',methods = ['POST','GET'])
 def graficainsulina():
     read = readLastData("sensorFreeStyle","dateString")
-    # print(read)
     (date,valGlucosa) = ordenarGrafica(read, 1 , 5 )
     return render_template("graficainsulina.html",dateGlucosa = date, glucosa = valGlucosa)
 @app.route('/graficapeso')
@@ -150,13 +149,11 @@ def graficainsulina():
 def graficapeso():
     read = readLastData("pesousuarios","fecha")
     (date,valPeso) = ordenarGrafica( read, 2, 1)
-    print(date)
     return render_template("graficapeso.html",datePeso = date, peso = valPeso)
 @app.route('/graficacircular')
 def graficacircular():
     read = readTables("sensorFreeStyle")
     zonasGraficaC = datacircular(read,5, 80, 120)
-    print(type(zonasGraficaC))
     return render_template("graficacircular.html",zonasGraficaC = zonasGraficaC)
 @app.route('/graficacircularpeso')
 def graficacircularpeso():
@@ -192,7 +189,6 @@ def readTables(tabla):
     try:
         mycursor.execute(querry)
         readData = mycursor.fetchall()
-        print(readData)
         print("count row :", mycursor.rowcount)
         db2.commit()
         db2.close()
@@ -222,7 +218,6 @@ def readLastData(tabla,campo):
     try:
         mycursor.execute(querry)
         readData = mycursor.fetchall()
-        print(readData)
         print("count row :", mycursor.rowcount)
         db2.commit()
         db2.close()
