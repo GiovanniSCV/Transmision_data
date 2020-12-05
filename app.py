@@ -15,74 +15,74 @@ app.config['MYSQL_DATABASE_DB'] = 'heroku_42078ca09a517b2'
 app.config['MYSQL_DATABASE_HOST'] = 'us-cdbr-east-02.cleardb.com'
 mysql.init_app(app)
 
-def traspaso_datos():
-    varwhile = True
-    try:
-        while varwhile != False :
-            #/////////////////////////////////////////////////////////////////////////
-            #--------------     Lectura MongoDB  -------------------------------------
-            user_collection = mongo.db.entries
-            lista = []
-            oldList = []
-            cont = 0
-            for valFreestyle in user_collection.find():
-                #   Adqisicion datos almacenados
-                oldList.append(valFreestyle)
-                #   Fin
-                valFreestyle.pop('_id')
-                valFreestyle['date'] = int(valFreestyle['date'])
-                listaAux = valFreestyle.values()
-                listas = tuple(listaAux)
-                lista.append(listas)
-                cont+=1
-            print(cont)
-            #-------------- Fin Lectura MongoDB  -------------------------------------
-            #/////////////////////////////////////////////////////////////////////////
-            #-------------- Hacer backup MongoDB -------------------------------------
-            # user_collection = mongo.db.oldata
-            # cont = 0
-            # for oldListItem in oldList:
-            #     repetido = user_collection.find_one({"date":oldListItem.get("date")})
-            #     if repetido is None:
-            #         # print("Puede Ingresar: ", oldListItem )
-            #         doc = mongo.db.oldata.insert_one(oldListItem)
-            #     # else:
-            #     #     print("Esta repetido: ", oldListItem)
-            #     cont+=1
-            # print("Conteo backup: ",cont)
-            #-------------- FIN Hacer backup MongoDB ---------------------------------
-            #/////////////////////////////////////////////////////////////////////////
-            #--------------     Insersión MySQL  -------------------------------------
-            db2 =  mysql.connect()
-            mycursor = db2.cursor()
-            querry = "INSERT INTO sensorFreeStyle (date,dateString,rssi,device,direction,rawbg,sgv,type,utcOffset,sysTime) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
-            # error = ""
-            try:
-                mycursor.executemany(querry,lista)
-                db2.commit()
-                print("Number record inserted, ID:", mycursor.lastrowid)
-            except:
-                print("No Insersión ")
-            db2.close()
-            #--------------  Fin Insersión MySQL  -------------------------------------
-            #//////////////////////////////////////////////////////////////////////////
-            #-----     Eliminar de colecion principal MongoDB.entries  ----------------
-            # user_collection = mongo.db.entries
-            # for valOldDelete in oldList:
-            #     user_collection.find_one_and_delete({"date":valOldDelete.get("date")})
-            #-----   FIN  Eliminar de colecion principal MongoDB.entries  -------------
-            #/////////////////////////////////////////////////////////////////////////
-            print("Actualizacion de datos")
-            time.sleep(300)
-    except:
-        print("algo salio malll")
-    #---------------------------------------------
-        # Esto es para eliminar de mongodb
+# def traspaso_datos():
+#     varwhile = True
+#     try:
+#         while varwhile != False :
+#             #/////////////////////////////////////////////////////////////////////////
+#             #--------------     Lectura MongoDB  -------------------------------------
+#             user_collection = mongo.db.entries
+#             lista = []
+#             oldList = []
+#             cont = 0
+#             for valFreestyle in user_collection.find():
+#                 #   Adqisicion datos almacenados
+#                 oldList.append(valFreestyle)
+#                 #   Fin
+#                 valFreestyle.pop('_id')
+#                 valFreestyle['date'] = int(valFreestyle['date'])
+#                 listaAux = valFreestyle.values()
+#                 listas = tuple(listaAux)
+#                 lista.append(listas)
+#                 cont+=1
+#             print(cont)
+#             #-------------- Fin Lectura MongoDB  -------------------------------------
+#             #/////////////////////////////////////////////////////////////////////////
+#             #-------------- Hacer backup MongoDB -------------------------------------
+#             # user_collection = mongo.db.oldata
+#             # cont = 0
+#             # for oldListItem in oldList:
+#             #     repetido = user_collection.find_one({"date":oldListItem.get("date")})
+#             #     if repetido is None:
+#             #         # print("Puede Ingresar: ", oldListItem )
+#             #         doc = mongo.db.oldata.insert_one(oldListItem)
+#             #     # else:
+#             #     #     print("Esta repetido: ", oldListItem)
+#             #     cont+=1
+#             # print("Conteo backup: ",cont)
+#             #-------------- FIN Hacer backup MongoDB ---------------------------------
+#             #/////////////////////////////////////////////////////////////////////////
+#             #--------------     Insersión MySQL  -------------------------------------
+#             db2 =  mysql.connect()
+#             mycursor = db2.cursor()
+#             querry = "INSERT INTO sensorFreeStyle (date,dateString,rssi,device,direction,rawbg,sgv,type,utcOffset,sysTime) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+#             # error = ""
+#             try:
+#                 mycursor.executemany(querry,lista)
+#                 db2.commit()
+#                 print("Number record inserted, ID:", mycursor.lastrowid)
+#             except:
+#                 print("No Insersión ")
+#             db2.close()
+#             #--------------  Fin Insersión MySQL  -------------------------------------
+#             #//////////////////////////////////////////////////////////////////////////
+#             #-----     Eliminar de colecion principal MongoDB.entries  ----------------
+#             # user_collection = mongo.db.entries
+#             # for valOldDelete in oldList:
+#             #     user_collection.find_one_and_delete({"date":valOldDelete.get("date")})
+#             #-----   FIN  Eliminar de colecion principal MongoDB.entries  -------------
+#             #/////////////////////////////////////////////////////////////////////////
+#             print("Actualizacion de datos")
+#             time.sleep(300)
+#     except:
+#         print("algo salio malll")
+#     #---------------------------------------------
+#         # Esto es para eliminar de mongodb
     
-#Usar hilos con threading
-mythreading = threading.Thread(target = traspaso_datos )
-mythreading.setDaemon(True)
-mythreading.start()
+# #Usar hilos con threading
+# mythreading = threading.Thread(target = traspaso_datos )
+# mythreading.setDaemon(True)
+# mythreading.start()
 
 @app.route('/')
 def home():
