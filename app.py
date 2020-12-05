@@ -88,6 +88,7 @@ mythreading.start()
 def home():
     countSensor = coutData("sensorFreeStyle")
     countPeso = coutData("pesousuarios")
+    print("Bienvenido")
     return render_template("index.html", sensor = countSensor, peso = countPeso)
 
 @app.route('/bascula',methods = ['POST','GET'])
