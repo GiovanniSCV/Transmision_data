@@ -118,7 +118,7 @@ def bascula():
             # arrayQuerry = tuple( iduser, peso )
             # mycursor.execute(querry,arrayQuerry)
 
-@app.route('/fitbit',methods = ['POST'])
+@app.route('/fitbit',methods = ['POST','GET'])
 def fitbit():
     if request.method == "POST":
         horafit = request.form['hora']
