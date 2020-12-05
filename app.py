@@ -126,7 +126,7 @@ def fitbit():
         stepsRate = request.form['stepsRate']
         caloriesRate = request.form['caloriesRate']
         # heartRate = request.form['']
-        print( "recived Data:  " + horafit +" "+ fitbit_id +" "+ stepsRate + " " + caloriesRate+" "+heartRate )
+        print( "recived Data:  " + horafit +" "+ fitbit_id +" "+ stepsRate + " " + caloriesRate+" ")#+heartRate )
     return "hi"
 #-----------------------------------------------------------------
 @app.route('/peso')
