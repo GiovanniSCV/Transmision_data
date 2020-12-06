@@ -127,7 +127,7 @@ def fitbit():
     calories = response['caloriesRate']
     heartRate = response['heartRate']
     steps = response['stepsRate']
-    print( "recived Data:  " + fecha + " " + str(steps) + " " + str(calories) + " "+heartRate )
+    print( "recived Data:  " + fecha + " " + str(steps) + " " + str(calories) + " " + str(heartRate) )
         #/////////////////////////////////////////////////////////////////////////
         #--------------     Insersión MySQL  -------------------------------------
         # db2 =  mysql.connect()
