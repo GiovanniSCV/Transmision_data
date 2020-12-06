@@ -123,14 +123,11 @@ def bascula():
 def fitbit():
     response = request.get_json()
     print(response)
-    # if request.method == "POST":
-        
-    #     horafit = request.form['hora']
-    #     fitbit_id = request.form['id']
-    #     stepsRate = request.form['stepsRate']
-    #     caloriesRate = request.form['caloriesRate']
-    #     # heartRate = request.form['']
-    #     print( "recived Data:  " + horafit +" "+ fitbit_id +" "+ stepsRate + " " + caloriesRate+" ")#+heartRate )
+    fecha = response['hora']
+    calories = response['caloriesRate']
+    heartRate = response['heartRate']
+    steps = response['stepsRate']
+    print( "recived Data:  " + fecha +" "+ steps + " " + calories+" "+heartRate )
         #/////////////////////////////////////////////////////////////////////////
         #--------------     Insersión MySQL  -------------------------------------
         # db2 =  mysql.connect()
