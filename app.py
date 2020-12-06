@@ -135,7 +135,7 @@ def fitbit():
     datos= (fecha, stepsRate, caloriesRate, heartRate)
     querry = "INSERT INTO fitbit (fecha,stepsRate,caloriesRate,heartRate) VALUES (%s,%s,%s,%s)"
     try:
-        mycursor.executemany(querry,datos)
+        mycursor.execute(querry,datos)
         db2.commit()
         print("Number record inserted, ID:", mycursor.lastrowid)
     except:
