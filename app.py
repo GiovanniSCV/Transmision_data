@@ -127,7 +127,21 @@ def fitbit():
         caloriesRate = request.form['caloriesRate']
         # heartRate = request.form['']
         print( "recived Data:  " + horafit +" "+ fitbit_id +" "+ stepsRate + " " + caloriesRate+" ")#+heartRate )
-    return "hi"
+        #/////////////////////////////////////////////////////////////////////////
+        #--------------     Insersión MySQL  -------------------------------------
+        # db2 =  mysql.connect()
+        # mycursor = db2.cursor()
+        # querry = "INSERT INTO sensorFreeStyle (date,dateString,rssi,device,direction,rawbg,sgv,type,utcOffset,sysTime) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+        # # error = ""
+        # try:
+        #     mycursor.executemany(querry,lista)
+        #     db2.commit()
+        #     print("Number record inserted, ID:", mycursor.lastrowid)
+        # except:
+        #     print("No Insersión ")
+        # db2.close()
+#             #--------------  Fin Insersión MySQL  -------------------------------------
+    return '{"status":"funciona"}'
 #-----------------------------------------------------------------
 @app.route('/peso')
 # @app.route('/index',methods = ['POST','GET'])
@@ -182,6 +196,7 @@ def coutData(tabla):
         countData = "vacio"
         return countData
     print(" ")
+
 def readTables(tabla):
     db2 =  mysql.connect()
     mycursor = db2.cursor()
