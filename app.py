@@ -124,24 +124,24 @@ def fitbit():
     response = request.get_json()
     print(response)
     fecha = response['hora']
-    calories = response['caloriesRate']
+    caloriesRate = response['caloriesRate']
     heartRate = response['heartRate']
-    steps = response['stepsRate']
-    print( "recived Data:  " + fecha + " " + str(steps) + " " + str(calories) + " " + str(heartRate) )
-        #/////////////////////////////////////////////////////////////////////////
-        #--------------     Insersión MySQL  -------------------------------------
-        # db2 =  mysql.connect()
-        # mycursor = db2.cursor()
-        # querry = "INSERT INTO sensorFreeStyle (date,dateString,rssi,device,direction,rawbg,sgv,type,utcOffset,sysTime) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
-        # # error = ""
-        # try:
-        #     mycursor.executemany(querry,lista)
-        #     db2.commit()
-        #     print("Number record inserted, ID:", mycursor.lastrowid)
-        # except:
-        #     print("No Insersión ")
-        # db2.close()
-#             #--------------  Fin Insersión MySQL  -------------------------------------
+    stepsRate = response['stepsRate']
+    print( "recived Data:  " + fecha + " " + str(stepsRate) + " " + str(caloriesRate) + " " + str(heartRate) )
+    # /////////////////////////////////////////////////////////////////////////
+    # --------------     Insersión MySQL  -------------------------------------
+    db2 =  mysql.connect()
+    mycursor = db2.cursor()
+    datos= (fecha, stepsRate, caloriesRate, heartRate)
+    querry = "INSERT INTO fitbit (fecha,stepsRate,caloriesRate,heartRate) VALUES (%s,%s,%s,%s)"
+    try:
+        mycursor.executemany(querry,datos)
+        db2.commit()
+        print("Number record inserted, ID:", mycursor.lastrowid)
+    except:
+        print("No Insersión ")
+    db2.close()
+        #--------------  Fin Insersión MySQL  -------------------------------------
     return '{"status":"funciona"}'
 #-----------------------------------------------------------------
 @app.route('/peso')
