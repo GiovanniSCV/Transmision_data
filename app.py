@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request
 from flask_pymongo import PyMongo
 from flaskext.mysql import MySQL
+import json
 import time
 import threading , sys
 
@@ -120,13 +121,16 @@ def bascula():
 
 @app.route('/fitbit',methods = ['POST','GET'])
 def fitbit():
-    if request.method == "POST":
-        horafit = request.form['hora']
-        fitbit_id = request.form['id']
-        stepsRate = request.form['stepsRate']
-        caloriesRate = request.form['caloriesRate']
-        # heartRate = request.form['']
-        print( "recived Data:  " + horafit +" "+ fitbit_id +" "+ stepsRate + " " + caloriesRate+" ")#+heartRate )
+    response = request.get_json()
+    print(response)
+    # if request.method == "POST":
+        
+    #     horafit = request.form['hora']
+    #     fitbit_id = request.form['id']
+    #     stepsRate = request.form['stepsRate']
+    #     caloriesRate = request.form['caloriesRate']
+    #     # heartRate = request.form['']
+    #     print( "recived Data:  " + horafit +" "+ fitbit_id +" "+ stepsRate + " " + caloriesRate+" ")#+heartRate )
         #/////////////////////////////////////////////////////////////////////////
         #--------------     Insersión MySQL  -------------------------------------
         # db2 =  mysql.connect()
