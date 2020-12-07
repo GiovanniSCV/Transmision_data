@@ -89,8 +89,9 @@ mysql.init_app(app)
 def home():
     countSensor = coutData("sensorFreeStyle")
     countPeso = coutData("pesousuarios")
+    countFitbit = coutData("fitbit")
     print("Bienvenido")
-    return render_template("index.html", sensor = countSensor, peso = countPeso)
+    return render_template("index.html", sensor = countSensor, peso = countPeso, fitbit = countFitbit)
 
 @app.route('/bascula',methods = ['POST','GET'])
 def bascula():
@@ -119,30 +120,6 @@ def bascula():
             # arrayQuerry = tuple( iduser, peso )
             # mycursor.execute(querry,arrayQuerry)
 
-@app.route('/fitbit',methods = ['POST','GET'])
-def fitbit():
-    response = request.get_json()
-    print(response)
-    fecha = response['hora']
-    caloriesRate = response['caloriesRate']
-    heartRate = response['heartRate']
-    stepsRate = response['stepsRate']
-    print( "recived Data:  " + fecha + " " + str(stepsRate) + " " + str(caloriesRate) + " " + str(heartRate) )
-    # /////////////////////////////////////////////////////////////////////////
-    # --------------     Insersión MySQL  -------------------------------------
-    db2 =  mysql.connect()
-    mycursor = db2.cursor()
-    datos= (fecha, stepsRate, caloriesRate, heartRate)
-    querry = "INSERT INTO fitbit (fecha,stepsRate,caloriesRate,heartRate) VALUES (%s,%s,%s,%s)"
-    try:
-        mycursor.execute(querry,datos)
-        db2.commit()
-        print("Number record inserted, ID:", mycursor.lastrowid)
-    except:
-        print("No Insersión ")
-    db2.close()
-        #--------------  Fin Insersión MySQL  -------------------------------------
-    return '{"status":"funciona"}'
 #-----------------------------------------------------------------
 @app.route('/peso')
 # @app.route('/index',methods = ['POST','GET'])
@@ -176,6 +153,36 @@ def graficacircularpeso():
     read = readTables("pesousuarios")
     zonasGraficaC = datacircular(read,1,60,80)
     return render_template("graficacircularpeso.html",zonasGraficaC = zonasGraficaC)
+
+@app.route('/fitbit',methods = ['POST','GET'])
+def fitbit():
+    response = request.get_json()
+    print(response)
+    fecha = response['hora']
+    caloriesRate = response['caloriesRate']
+    heartRate = response['heartRate']
+    stepsRate = response['stepsRate']
+    print( "recived Data:  " + fecha + " " + str(stepsRate) + " " + str(caloriesRate) + " " + str(heartRate) )
+    # /////////////////////////////////////////////////////////////////////////
+    # --------------     Insersión MySQL  -------------------------------------
+    db2 =  mysql.connect()
+    mycursor = db2.cursor()
+    datos= (fecha, stepsRate, caloriesRate, heartRate)
+    querry = "INSERT INTO fitbit (fecha,stepsRate,caloriesRate,heartRate) VALUES (%s,%s,%s,%s)"
+    try:
+        mycursor.execute(querry,datos)
+        db2.commit()
+        print("Number record inserted, ID:", mycursor.lastrowid)
+    except:
+        print("No Insersión ")
+    db2.close()
+        #--------------  Fin Insersión MySQL  -------------------------------------
+    return '{"status":"funciona"}'
+@app.route('/relojfitbit')
+def relojfitbit():
+    read = readTables("fitbit")                                 # Lectura tabla fitbit (SELECT * FROM FITBIT)
+    print(read[0])
+    return render_template("relojfitbit.html", read = read )    # Mostrar html relojfitbit al usuario y envio de los datos leidos
 
 #-----------------------------------------------------------------
 def coutData(tabla):
